@@ -17,7 +17,7 @@ namespace GraphQLNetCore.Api.GraphQL
                 .AddDefaultTransactionScopeHandler()    // add transaction
                 .AddSubscriptionType<SubscriptionBook>()// add subscription
                 .AddInMemorySubscriptions()             // add In-Memory Provider for subscription
-                .AddFiltering()
+                .AddFiltering()                         // Add Filtering
                 ;
 
             return services;
