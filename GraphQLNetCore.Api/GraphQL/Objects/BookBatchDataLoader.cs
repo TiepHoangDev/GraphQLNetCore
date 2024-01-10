@@ -15,7 +15,7 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
 
         protected override async Task<IReadOnlyDictionary<string, Book>> LoadBatchAsync(IReadOnlyList<string> keys, CancellationToken cancellationToken)
         {
-            return await _dbContext.Books.Where(q => keys.Contains(q.Id)).ToDictionaryAsync(x => x.Id);
+            return await _dbContext.Books.Where(q => keys.Contains(q.Id)).ToDictionaryAsync(x => x.Id, cancellationToken);
         }
     }
 

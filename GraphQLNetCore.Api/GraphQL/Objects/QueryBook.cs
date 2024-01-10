@@ -1,5 +1,7 @@
 ﻿using GraphQLNetCore.Api.GraphQL.ShopDb;
+using HotChocolate.Resolvers;
 using HotChocolate.Types.Pagination;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Immutable;
 
@@ -52,6 +54,16 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
         public async Task<Book> BookDataLoader(string id, [Service] BookBatchDataLoader batchDataLoader)
         {
             return await batchDataLoader.LoadAsync(id);
+        }
+
+        public async Task<Book> BookDataLoaderDelegate(string id, IResolverContext context, [Service] ShopDbContext dbContext)
+        {
+
+            var loader = context.BatchDataLoader<string, Book>(async (ids, ct) =>
+            {
+                return await dbContext.Books.Where(a => ids.Contains(a.Id)).ToDictionaryAsync(a => a.Id, ct);
+            });
+            return await loader.LoadAsync(id);
         }
     }
 
