@@ -14,6 +14,7 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
 
         public async Task<Book?> AddBook(Book book, [Service] ITopicEventSender sender)
         {
+            if (book.Id == "") book.Id = DateTime.Now.Ticks.ToString();
             _bookDatabase.Books.Add(book);
             await sender.SendAsync(topicName: nameof(SubscriptionBook.BookAdded), message: book);
             return new QueryBook(_bookDatabase).GetBooks(book.Id).FirstOrDefault();
@@ -26,17 +27,21 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
             var b = new QueryBook(_bookDatabase).GetBooks(id).FirstOrDefault();
             if (b is Book)
             {
-                DeleteBook(id);
+                await DeleteBook(id, sender);
                 await AddBook(book, sender);
                 return book;
             }
             return default;
         }
 
-        public bool DeleteBook(string id)
+        public async Task<bool> DeleteBook(string id, [Service] ITopicEventSender sender)
         {
             var b = new QueryBook(_bookDatabase).GetBooks(id).FirstOrDefault();
-            if (b is Book) return _bookDatabase.Books.Remove(b);
+            if (b is Book)
+            {
+                await sender.SendAsync($"BookDelete_by_{b.Author.Name}", b);
+                return _bookDatabase.Books.Remove(b);
+            }
             return false;
         }
 

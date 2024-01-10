@@ -11,6 +11,14 @@
         {
             return book;
         }
+
+
+        [Subscribe]
+        [Topic("BookDelete_by_{author}")]
+        public string BookDelete(string author, [EventMessage] Book book)
+        {
+            return $"Delete book {book.Title} success book of {author}";
+        }
     }
 
 }
