@@ -50,3 +50,21 @@ subscription{
   }
 }
 ```
+
+> ### Paging
+```js
+query paging{
+  bookPaging(first: 3, after: "5", last: 1, before: "901") {
+      edges {
+        cursor
+        node {
+          id
+          title
+          author{
+            name
+          }
+        }
+      }
+    }
+}
+```
