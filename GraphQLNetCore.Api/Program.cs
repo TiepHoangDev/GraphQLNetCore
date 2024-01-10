@@ -1,3 +1,4 @@
+using GraphQLNetCore.Api.GraphQL;
 using GraphQLNetCore.Api.GraphQL.Objects;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,9 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSingleton<BookDatabase>();
 
-builder.Services.AddGraphQLServer()
-    .AddQueryType<QueryBook>()
-    .AddMutationType<MutationBook>();
+builder.Services.ConfigGrapQL();
 
 var app = builder.Build();
 
@@ -31,7 +30,7 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
-app.MapGraphQL();
+app.ApplyGrapQL();
 
 app.Run();
 
