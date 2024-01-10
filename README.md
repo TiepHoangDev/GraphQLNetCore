@@ -1,4 +1,5 @@
 # GraphQLNetCore
+### https://chillicream.com/docs/hotchocolate/v13/defining-a-schema
 
 ```js
 #get by ids
