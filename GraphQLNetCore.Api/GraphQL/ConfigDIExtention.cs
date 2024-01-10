@@ -19,6 +19,7 @@ namespace GraphQLNetCore.Api.GraphQL
                 .AddInMemorySubscriptions()             // add In-Memory Provider for subscription
                 .AddFiltering()                         // Add Filtering
                 .AddSorting()                           // Add Sorting
+                .AddDataLoader<BookBatchDataLoader>()   // Add Data Loader
                 ;
 
             return services;

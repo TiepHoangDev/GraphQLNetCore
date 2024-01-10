@@ -1,6 +1,7 @@
 ﻿using GraphQLNetCore.Api.GraphQL.ShopDb;
 using HotChocolate.Types.Pagination;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Immutable;
 
 namespace GraphQLNetCore.Api.GraphQL.Objects
 {
@@ -47,6 +48,11 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
         [UseFiltering]
         [UseSorting]
         public IEnumerable<Book> EfCoreGetBooks([Service] ShopDbContext dbContext) => dbContext.Books;
+
+        public async Task<Book> BookDataLoader(string id, [Service] BookBatchDataLoader batchDataLoader)
+        {
+            return await batchDataLoader.LoadAsync(id);
+        }
     }
 
 }
