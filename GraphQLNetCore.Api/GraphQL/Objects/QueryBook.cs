@@ -21,5 +21,4 @@
         public List<Book> GetBooks(params string[] ids) => _bookDatabase.Books.Where(q => ids.Length == 0 || ids.Contains(q.Id)).ToList();
     }
 
-
 }

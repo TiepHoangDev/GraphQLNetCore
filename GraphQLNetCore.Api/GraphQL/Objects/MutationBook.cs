@@ -1,4 +1,7 @@
-﻿namespace GraphQLNetCore.Api.GraphQL.Objects
+﻿using HotChocolate.Subscriptions;
+using System.Collections;
+
+namespace GraphQLNetCore.Api.GraphQL.Objects
 {
     //https://chillicream.com/docs/hotchocolate/v13/defining-a-schema/mutations
     public class MutationBook
@@ -9,13 +12,14 @@
             _bookDatabase = bookDatabase;
         }
 
-        public Book? AddBook(Book book)
+        public async Task<Book?> AddBook(Book book, [Service] ITopicEventSender sender)
         {
             _bookDatabase.Books.Add(book);
+            await sender.SendAsync(topicName: nameof(SubscriptionBook.BookAdded), message: book);
             return new QueryBook(_bookDatabase).GetBooks(book.Id).FirstOrDefault();
         }
 
-        public Book? UpdateBook(string id, Book book)
+        public async Task<Book?> UpdateBook(string id, Book book, [Service] ITopicEventSender sender)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
 
@@ -23,7 +27,7 @@
             if (b is Book)
             {
                 DeleteBook(id);
-                AddBook(book);
+                await AddBook(book, sender);
                 return book;
             }
             return default;

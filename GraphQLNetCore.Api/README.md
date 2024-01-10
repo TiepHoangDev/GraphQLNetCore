@@ -1,6 +1,6 @@
 # GraphQLNetCore
 
-```
+```js
 #get by ids
 query getbyids{
   books(ids: []) {
@@ -35,4 +35,18 @@ mutation delete{
 }
 
 
+```
+
+> ### subscription
+
+```js
+subscription{
+  bookAdded{
+    id,
+    title,
+    author{
+      name
+    }
+  }
+}
 ```
