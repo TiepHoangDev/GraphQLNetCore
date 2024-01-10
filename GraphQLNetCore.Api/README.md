@@ -69,7 +69,7 @@ query paging{
 }
 ```
 
-### FILTER
+> ### FILTER
 ```js
 
 mutation add {
@@ -101,4 +101,20 @@ query filter {
 }
 
 
+```
+
+> ### Sorting
+```js
+query order {
+  efCoreGetBooks(first: 5, order: { id: DESC, title: ASC }) {
+    nodes {
+      id
+      title
+      author {
+        id
+        name
+      }
+    }
+  }
+}
 ```

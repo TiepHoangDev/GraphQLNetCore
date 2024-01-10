@@ -18,6 +18,7 @@ namespace GraphQLNetCore.Api.GraphQL
                 .AddSubscriptionType<SubscriptionBook>()// add subscription
                 .AddInMemorySubscriptions()             // add In-Memory Provider for subscription
                 .AddFiltering()                         // Add Filtering
+                .AddSorting()                           // Add Sorting
                 ;
 
             return services;

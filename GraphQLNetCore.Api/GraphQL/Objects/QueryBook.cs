@@ -45,6 +45,7 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
 
         [UsePaging]
         [UseFiltering]
+        [UseSorting]
         public IEnumerable<Book> EfCoreGetBooks([Service] ShopDbContext dbContext) => dbContext.Books;
     }
 
