@@ -17,6 +17,8 @@
 
         public Book? UpdateBook(string id, Book book)
         {
+            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+
             var b = new QueryBook(_bookDatabase).GetBooks(id).FirstOrDefault();
             if (b is Book)
             {

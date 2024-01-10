@@ -7,8 +7,10 @@ namespace GraphQLNetCore.Api.GraphQL
         public static IServiceCollection ConfigGrapQL(this IServiceCollection services)
         {
             services.AddGraphQLServer()
-                .AddQueryType<QueryBook>()
-                .AddMutationType<MutationBook>();
+                .AddQueryType<QueryBook>()              // add query
+                .AddMutationType<MutationBook>()        // add mutation
+                .AddDefaultTransactionScopeHandler()    // add transaction
+                ;
 
             return services;
         }
