@@ -68,3 +68,37 @@ query paging{
     }
 }
 ```
+
+### FILTER
+```js
+
+mutation add {
+  add1: addBook(book: { id: "1", idAuthor: "1", author: { id: "1" } }) {
+    id
+  }
+  add2: addBook(book: { id: "12", idAuthor: "1"}) {
+    id
+  }
+  add3: addBook(book: { id: "2", idAuthor: "1"}) {
+    id
+  }
+  add4: addBook(book: { id: "22", idAuthor: "1"}) {
+    id
+  }
+}
+
+query filter {
+  efCoreGetBooks(first: 5, where: { or: [{ id: { startsWith: "1" } }] }) {
+    nodes {
+      id
+      title
+      author {
+        id
+        name
+      }
+    }
+  }
+}
+
+
+```

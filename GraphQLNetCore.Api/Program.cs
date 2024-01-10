@@ -4,8 +4,6 @@ using GraphQLNetCore.Api.GraphQL.Objects;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<BookDatabase>();
-
 builder.Services.ConfigGrapQL();
 
 var app = builder.Build();

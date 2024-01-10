@@ -1,16 +1,11 @@
-﻿using HotChocolate.Types.Pagination;
+﻿using GraphQLNetCore.Api.GraphQL.ShopDb;
+using HotChocolate.Types.Pagination;
+using Microsoft.EntityFrameworkCore;
 
 namespace GraphQLNetCore.Api.GraphQL.Objects
 {
     public class QueryBook
     {
-        private BookDatabase _bookDatabase;
-
-        public QueryBook(BookDatabase bookDatabase)
-        {
-            _bookDatabase = bookDatabase;
-        }
-
         public Book GetBookDemo() => new Book
         {
             Title = "C# in depth.",
@@ -20,7 +15,7 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
             }
         };
 
-        public IEnumerable<Book> GetBooks(params string[] ids) => _bookDatabase.Books.Where(q => ids.Length == 0 || ids.Contains(q.Id)).ToList();
+        public IEnumerable<Book> GetBooks([Service] ShopDbContext _dbContext, params string[] ids) => _dbContext.Books.Where(q => ids.Length == 0 || ids.Contains(q.Id)).ToList();
 
         IEnumerable<Book> AllBook => Enumerable.Range(1, 10000).Select(idx => new Book
         {
@@ -47,6 +42,10 @@ namespace GraphQLNetCore.Api.GraphQL.Objects
             var connection = new Connection<Book>(edges, pageInfo, ct => ValueTask.FromResult(AllBook.Count()));
             return connection;
         }
+
+        [UsePaging]
+        [UseFiltering]
+        public IEnumerable<Book> EfCoreGetBooks([Service] ShopDbContext dbContext) => dbContext.Books;
     }
 
 }
